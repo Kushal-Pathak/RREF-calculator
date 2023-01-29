@@ -3,7 +3,7 @@
 using namespace std;
 #define m 3
 #define n 3
-float matrix[m][n] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+float matrix[m][n] = {{0, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
 void display();
 void exchange_row(int, int);				 // R1<->R2, exchange two rows
@@ -25,6 +25,18 @@ int main()
 			if (i == j)
 			{
 				float pivot = matrix[i][j];
+				if (pivot == 0)
+				{
+					for (int h = i + 1; h < m; h++)
+					{
+						pivot = matrix[h][j];
+						if (pivot != 0)
+						{
+							exchange_row(i, h);
+							break;
+						}
+					}
+				}
 				if (pivot != 0)
 				{
 					divide_row(i, pivot);
@@ -69,12 +81,14 @@ void display()
 void exchange_row(int r1, int r2)
 {
 	float temp;
+	cout << "R" << r1 + 1 << "<=>R" << r2 + 1 << endl;
 	for (int w = 0; w < n; w++)
 	{
 		temp = matrix[r1][w];
 		matrix[r1][w] = matrix[r2][w];
 		matrix[r2][w] = temp;
 	}
+	display();
 }
 
 void divide_row(int r, float c)
@@ -85,6 +99,8 @@ void divide_row(int r, float c)
 		for (int w = 0; w < n; w++)
 		{
 			matrix[r][w] = matrix[r][w] / c;
+			if (matrix[r][w] == 0)
+				matrix[r][w] = 0;
 		}
 		display();
 	}
@@ -92,10 +108,15 @@ void divide_row(int r, float c)
 
 void multiply_subtract_row(int r1, int r2, float c)
 {
-	cout << "R" << r1 + 1 << "=>R" << r1 + 1 << "-(" << c << ")*R" << r2 + 1 << endl;
-	for (int w = 0; w < n; w++)
+	if (c != 0)
 	{
-		matrix[r1][w] = matrix[r1][w] - c * matrix[r2][w];
+		cout << "R" << r1 + 1 << "=>R" << r1 + 1 << "-(" << c << ")*R" << r2 + 1 << endl;
+		for (int w = 0; w < n; w++)
+		{
+			matrix[r1][w] = matrix[r1][w] - c * matrix[r2][w];
+			if (matrix[r1][w] == 0)
+				matrix[r1][w] = 0;
+		}
+		display();
 	}
-	display();
 }
