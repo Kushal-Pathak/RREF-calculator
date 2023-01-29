@@ -9,6 +9,8 @@ void display();
 void exchange_row(int, int);				 // R1<->R2, exchange two rows
 void divide_row(int, float);				 // R=R/c, divide a row with a constant
 void multiply_subtract_row(int, int, float); // R1=R1-c*R2, multiply R2 with c and subtract from R1
+int is_zero_row(int);						 // returns 1 if given row is zero
+void move_zero_row_to_bottom();				 // finds and moves zero row to bottom
 
 int main()
 {
@@ -51,7 +53,7 @@ int main()
 						}
 					}
 
-					// pivot ko tala ko row haru ko operation
+					// pivot ko tala ka lai 0 banauni
 					for (int h = i + 1; h < m; h++)
 					{
 						float c = matrix[h][j];
@@ -118,5 +120,33 @@ void multiply_subtract_row(int r1, int r2, float c)
 				matrix[r1][w] = 0;
 		}
 		display();
+	}
+}
+
+int is_zero_row(int r)
+{
+	for (int w = 0; w < n; w++)
+	{
+		if (matrix[r][w] != 0)
+			return 0;
+	}
+	return 1;
+}
+
+void move_zero_row_to_bottom()
+{
+	for (int r = 0; r < m; r++)
+	{
+		if (is_zero_row(r))
+		{
+			for (int h = m - 1; h > r; h--)
+			{
+				if (!is_zero_row(h))
+				{
+					exchange_row(r, h);
+					break;
+				}
+			}
+		}
 	}
 }
