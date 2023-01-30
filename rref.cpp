@@ -51,8 +51,7 @@ int main()
 			pivot_position = find_next_pivot_below(i, j);
 			if (pivot_position.i != -1) // if pivot found below
 			{
-				cout << " Exchange [" << i + 1 << "][" << j + 1 << "]"
-					 << " to below \n ";
+				cout << " Exchange row " << i + 1 << " to below\n ";
 				exchange_row(i, pivot_position.i);
 				pivot = matrix[i][j];
 			}
