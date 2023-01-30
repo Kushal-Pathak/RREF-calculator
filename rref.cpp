@@ -1,9 +1,10 @@
+// RREF Calculator By Kushal Pathak
 #include <iostream>
 #include <conio.h>
 using namespace std;
-#define m 4
-#define n 3
-float matrix[m][n] = {{1, 2, 3}, {1, 1, 1}, {4, 5, 6}, {7, 8, 9}};
+
+float matrix[10][10];
+int m, n;
 
 struct pos
 {
@@ -23,6 +24,19 @@ pos find_next_pivot_right(int, int);		 // returns Position of non zero pivot of 
 
 int main()
 {
+	cout << " RREF Calculator By Kushal Pathak" << endl;
+	cout << " Enter Matrix size i.e. m n : ";
+	cin >> m >> n;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << " Enter Matrix[" << i + 1 << "][" << j + 1 << "] : ";
+			cin >> matrix[i][j];
+		}
+	}
+	cout << endl
+		 << " Solution:" << endl;
 	int i = 0, j = 0;
 	pos pivot_position;
 	display();
@@ -37,7 +51,7 @@ int main()
 			pivot_position = find_next_pivot_below(i, j);
 			if (pivot_position.i != -1) // if pivot found below
 			{
-				cout << "Exchange [" << i + 1 << "][" << j + 1 << "]"
+				cout << " Exchange [" << i + 1 << "][" << j + 1 << "]"
 					 << " to below \n ";
 				exchange_row(i, pivot_position.i);
 				pivot = matrix[i][j];
@@ -60,6 +74,8 @@ int main()
 		}
 		if (pivot != 0)
 		{
+			if (pivot != 1)
+				cout << " Making pivot 1" << endl;
 			divide_row(i, pivot); // making pivot element 1
 			make_zero_above_pivot(i, j);
 			make_zero_below_pivot(i, j);
@@ -67,7 +83,8 @@ int main()
 			j++;
 		}
 	}
-
+	cout << " The Final answer is:" << endl;
+	display();
 	getch();
 	return 0;
 }
@@ -78,7 +95,7 @@ void display()
 	{
 		for (int j = 0; j < n; j++)
 		{
-			cout << matrix[i][j] << "\t";
+			cout << " " << matrix[i][j] << "\t";
 		}
 		cout << "\n";
 	}
@@ -88,7 +105,8 @@ void display()
 void exchange_row(int r1, int r2)
 {
 	float temp;
-	cout << "R" << r1 + 1 << "<=>R" << r2 + 1 << endl;
+	cout << " R" << r1 + 1 << "<=>R" << r2 + 1 << endl
+		 << endl;
 	for (int w = 0; w < n; w++)
 	{
 		temp = matrix[r1][w];
@@ -102,7 +120,8 @@ void divide_row(int r, float c)
 {
 	if (c != 1)
 	{
-		cout << "R" << r + 1 << "=>R" << r + 1 << "/" << c << endl;
+		cout << " R" << r + 1 << "=>R" << r + 1 << "/" << c << endl
+			 << endl;
 		for (int w = 0; w < n; w++)
 		{
 			matrix[r][w] = matrix[r][w] / c;
@@ -117,7 +136,8 @@ void multiply_subtract_row(int r1, int r2, float c)
 {
 	if (c != 0)
 	{
-		cout << "R" << r1 + 1 << "=>R" << r1 + 1 << "-(" << c << ")*R" << r2 + 1 << endl;
+		cout << " R" << r1 + 1 << "=>R" << r1 + 1 << "-(" << c << ")*R" << r2 + 1 << endl
+			 << endl;
 		for (int w = 0; w < n; w++)
 		{
 			matrix[r1][w] = matrix[r1][w] - c * matrix[r2][w];
@@ -148,7 +168,7 @@ void move_zero_row_to_bottom()
 			{
 				if (!is_zero_row(h))
 				{
-					cout << "Moving zero row to bottom\n";
+					cout << " Moving zero row to bottom\n";
 					exchange_row(r, h);
 					break;
 				}
@@ -162,7 +182,7 @@ void make_zero_above_pivot(int pivot_row, int pivot_col)
 	for (int r = pivot_row - 1; r >= 0; r--)
 	{
 		if (matrix[r][pivot_col] != 0)
-			cout << "Making zero above pivot\n";
+			cout << " Making zero above pivot\n";
 		multiply_subtract_row(r, pivot_row, matrix[r][pivot_col]);
 	}
 }
@@ -171,7 +191,7 @@ void make_zero_below_pivot(int pivot_row, int pivot_col)
 	for (int r = pivot_row + 1; r < m; r++)
 	{
 		if (matrix[r][pivot_col] != 0)
-			cout << "Making zero below pivot\n";
+			cout << " Making zero below pivot\n";
 		multiply_subtract_row(r, pivot_row, matrix[r][pivot_col]);
 	}
 }
